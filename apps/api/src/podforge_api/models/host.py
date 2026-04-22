@@ -10,9 +10,7 @@ from podforge_api.models.base import Base, TimestampMixin
 class Host(Base, TimestampMixin):
     __tablename__ = "hosts"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     personality_prompt: Mapped[str] = mapped_column(Text, nullable=False)
     voice_id: Mapped[str] = mapped_column(String(255), nullable=False)

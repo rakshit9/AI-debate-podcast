@@ -11,7 +11,7 @@ class InvalidTokenError(Exception):
 
 
 def create_access_token(subject: str, settings: Settings) -> str:
-    expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
+    expire = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
         minutes=settings.jwt_access_token_expire_minutes
     )
     payload = {"sub": subject, "exp": expire, "type": "access"}
@@ -19,7 +19,7 @@ def create_access_token(subject: str, settings: Settings) -> str:
 
 
 def create_refresh_token(subject: str, settings: Settings) -> str:
-    expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(
+    expire = datetime.datetime.now(datetime.UTC) + datetime.timedelta(
         days=settings.jwt_refresh_token_expire_days
     )
     payload = {"sub": subject, "exp": expire, "type": "refresh"}

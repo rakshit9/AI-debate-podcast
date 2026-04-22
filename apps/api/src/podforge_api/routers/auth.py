@@ -3,7 +3,12 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from podforge_api.auth.dependencies import get_current_user
-from podforge_api.auth.jwt import InvalidTokenError, create_access_token, create_refresh_token, decode_token
+from podforge_api.auth.jwt import (
+    InvalidTokenError,
+    create_access_token,
+    create_refresh_token,
+    decode_token,
+)
 from podforge_api.auth.password import generate_api_key, hash_password, verify_password
 from podforge_api.config import Settings, get_settings
 from podforge_api.database import get_db
@@ -39,7 +44,11 @@ async def login(
 ) -> Token:
     svc = UserService(db)
     user = await svc.get_by_email(form.username)
-    if not user or not user.hashed_password or not verify_password(form.password, user.hashed_password):
+    if (
+        not user
+        or not user.hashed_password
+        or not verify_password(form.password, user.hashed_password)
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -62,7 +71,9 @@ async def refresh_token(
     try:
         payload = decode_token(body.refresh_token, settings)
     except InvalidTokenError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token"
+        )
     if payload.type != "refresh":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type")
     svc = UserService(db)

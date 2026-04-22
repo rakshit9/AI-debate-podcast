@@ -1,12 +1,12 @@
 import uuid
 from typing import TYPE_CHECKING
 
+from podforge_shared_types.enums import EpisodeFormatEnum
 from sqlalchemy import ForeignKey, String, Text
 from sqlalchemy.dialects.postgresql import ARRAY, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from podforge_api.models.base import Base, TimestampMixin
-from podforge_shared_types.enums import EpisodeFormatEnum
 
 if TYPE_CHECKING:
     from podforge_api.models.episode import Episode
@@ -16,9 +16,7 @@ if TYPE_CHECKING:
 class Show(Base, TimestampMixin):
     __tablename__ = "shows"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     owner_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
     )

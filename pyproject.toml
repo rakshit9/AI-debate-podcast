@@ -2,6 +2,10 @@
 dev-dependencies = [
     "pre-commit>=3.7",
     "commitizen>=3.27",
+    "ruff>=0.4.4",
+    "mypy>=1.10",
+    "types-passlib>=1.7",
+    "sqlalchemy[mypy]>=2.0.30",
 ]
 
 [tool.uv.workspace]
@@ -19,11 +23,13 @@ target-version = "py311"
 
 [tool.ruff.lint]
 select = ["E", "W", "F", "I", "B", "C4", "UP", "S", "ANN"]
-ignore = ["ANN101", "ANN102", "ANN401"]
+ignore = ["ANN401", "B008", "B904", "S105"]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "ANN"]
-"alembic/**" = ["ANN", "E501"]
+"**/tests/**" = ["S101", "ANN", "S105"]
+"**/alembic/env.py" = ["ANN", "E501"]
+"**/alembic/versions/**" = ["ANN", "E501", "UP", "I", "W"]
+"**/config.py" = ["S105"]
 
 [tool.ruff.format]
 quote-style = "double"

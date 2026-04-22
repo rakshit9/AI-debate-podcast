@@ -1,9 +1,8 @@
-import uuid
 import datetime
-
-from pydantic import BaseModel, ConfigDict, EmailStr
+import uuid
 
 from podforge_shared_types.enums import SubscriptionTier
+from pydantic import BaseModel, ConfigDict, EmailStr
 
 
 class UserCreate(BaseModel):
