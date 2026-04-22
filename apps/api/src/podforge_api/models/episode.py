@@ -36,5 +36,8 @@ class Episode(Base, TimestampMixin):
     published_at: Mapped[datetime.datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
+    celery_task_id: Mapped[str | None] = mapped_column(String(255), nullable=True, index=True)
+    published_urls: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)  # type: ignore[type-arg]
+    pipeline_progress: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)  # type: ignore[type-arg]
 
     show: Mapped["Show"] = relationship("Show", back_populates="episodes", lazy="selectin")
