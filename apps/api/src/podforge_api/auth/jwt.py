@@ -1,4 +1,5 @@
 import datetime
+from typing import cast
 
 from jose import JWTError, jwt
 
@@ -15,7 +16,7 @@ def create_access_token(subject: str, settings: Settings) -> str:
         minutes=settings.jwt_access_token_expire_minutes
     )
     payload = {"sub": subject, "exp": expire, "type": "access"}
-    return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+    return cast(str, jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm))
 
 
 def create_refresh_token(subject: str, settings: Settings) -> str:
@@ -23,7 +24,7 @@ def create_refresh_token(subject: str, settings: Settings) -> str:
         days=settings.jwt_refresh_token_expire_days
     )
     payload = {"sub": subject, "exp": expire, "type": "refresh"}
-    return jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm)
+    return cast(str, jwt.encode(payload, settings.jwt_secret_key, algorithm=settings.jwt_algorithm))
 
 
 def decode_token(token: str, settings: Settings) -> TokenPayload:
