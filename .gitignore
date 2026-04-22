@@ -24,8 +24,23 @@ env/
 .env.*
 !.env.example
 
-# uv
-uv.lock
+
+# Secrets / credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.p8
+secrets/
+credentials/
+service-account*.json
+*-credentials.json
+
+# API keys / tokens (catch common patterns)
+.secrets
+.token
 
 # Testing
 .pytest_cache/
@@ -66,10 +81,6 @@ minio_data/
 *.log
 logs/
 
-# Secrets
-*.pem
-*.key
-*.p12
 
 # Alembic (don't ignore versions)
 *.pyc
