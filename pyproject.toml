@@ -23,6 +23,7 @@ members = [
     "services/mcp/publish_server",
     "services/mcp/memory_server",
     "services/mcp/music_server",
+    "services/agents",
 ]
 
 # ─── Ruff (shared defaults, overridable per package) ───────────────────────
