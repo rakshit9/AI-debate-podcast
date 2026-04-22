@@ -1,11 +1,11 @@
 from collections.abc import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 from podforge_api.config import get_settings
 
 
-def _make_engine() -> "create_async_engine":  # type: ignore[valid-type]
+def _make_engine() -> AsyncEngine:
     s = get_settings()
     return create_async_engine(
         s.database_url,
