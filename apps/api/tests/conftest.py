@@ -3,12 +3,11 @@ from collections.abc import AsyncGenerator
 
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.pool import NullPool
-
 from podforge_api.database import get_db
 from podforge_api.main import app
 from podforge_api.models.base import Base
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.pool import NullPool
 
 TEST_DATABASE_URL = os.environ.get(
     "DATABASE_URL",
