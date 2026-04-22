@@ -19,6 +19,8 @@ dependencies = [
     "redis[hiredis]>=5.0",
     "boto3>=1.34",
     "structlog>=24.1",
+    "celery[redis]>=5.4",
+    "asgiref>=3.8",
     "podforge-shared-types",
     "podforge-shared-utils",
 ]
