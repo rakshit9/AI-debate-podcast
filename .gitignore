@@ -25,6 +25,9 @@ env/
 !.env.example
 
 
+# uv lockfile — intentionally committed for reproducible builds
+# uv.lock
+
 # Secrets / credentials
 *.pem
 *.key
