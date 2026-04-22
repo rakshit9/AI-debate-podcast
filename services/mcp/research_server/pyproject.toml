@@ -1,0 +1,42 @@
+[project]
+name = "podforge-research-mcp"
+version = "0.1.0"
+description = "PodForge research MCP server — web, arXiv, Reddit, YouTube, NewsAPI"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]>=1.2",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "tavily-python>=0.3",
+    "arxiv>=2.1",
+    "praw>=7.7",
+    "youtube-transcript-api>=0.6",
+    "newsapi-python>=0.2",
+    "httpx>=0.27",
+    "redis[asyncio]>=5.0",
+    "podforge-shared-types",
+    "podforge-shared-utils",
+]
+
+[project.scripts]
+research-mcp = "podforge_research_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/podforge_research_mcp"]
+
+[tool.uv.sources]
+podforge-shared-types = { workspace = true }
+podforge-shared-utils = { workspace = true }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]

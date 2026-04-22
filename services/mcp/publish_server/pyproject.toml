@@ -1,0 +1,39 @@
+[project]
+name = "podforge-publish-mcp"
+version = "0.1.0"
+description = "PodForge publish MCP server — S3, Spotify, YouTube, RSS, Twitter"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp[cli]>=1.2",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "boto3>=1.34",
+    "feedgen>=0.9",
+    "tweepy>=4.14",
+    "httpx>=0.27",
+    "podforge-shared-types",
+    "podforge-shared-utils",
+]
+
+[project.scripts]
+publish-mcp = "podforge_publish_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/podforge_publish_mcp"]
+
+[tool.uv.sources]
+podforge-shared-types = { workspace = true }
+podforge-shared-utils = { workspace = true }
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+plugins = ["pydantic.mypy"]

@@ -18,6 +18,11 @@ members = [
     "apps/cli",
     "packages/shared_types",
     "packages/shared_utils",
+    "services/mcp/research_server",
+    "services/mcp/audio_server",
+    "services/mcp/publish_server",
+    "services/mcp/memory_server",
+    "services/mcp/music_server",
 ]
 
 # ─── Ruff (shared defaults, overridable per package) ───────────────────────
