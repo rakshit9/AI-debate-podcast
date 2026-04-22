@@ -128,6 +128,19 @@ async def delete_episode(
 # ── Pipeline control ──────────────────────────────────────────────────────────
 
 
+@router.post("/{episode_id}/generate", response_model=EpisodeResponse)
+async def generate_episode(
+    episode_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> Episode:
+    """Re-trigger generation for a queued or failed episode."""
+    episode = await _get_episode_or_404(episode_id, db)
+    await _svc(db).queue_pipeline(episode, requires_human_approval=False)
+    await db.refresh(episode)
+    return episode
+
+
 @router.get("/{episode_id}/status", response_model=EpisodeStatusResponse)
 async def get_episode_status(
     episode_id: uuid.UUID,
