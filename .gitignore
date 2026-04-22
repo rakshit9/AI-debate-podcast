@@ -1,0 +1,75 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+.venv/
+venv/
+ENV/
+env/
+.env
+.env.*
+!.env.example
+
+# uv
+uv.lock
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+.hypothesis/
+
+# Mypy
+.mypy_cache/
+*.pyi.bak
+
+# Ruff
+.ruff_cache/
+
+# Node
+node_modules/
+.pnpm-store/
+.next/
+out/
+dist/
+
+# Docker / local data volumes
+postgres_data/
+redis_data/
+qdrant_data/
+minio_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+logs/
+
+# Secrets
+*.pem
+*.key
+*.p12
+
+# Alembic (don't ignore versions)
+*.pyc

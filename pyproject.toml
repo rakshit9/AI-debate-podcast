@@ -1,0 +1,38 @@
+[tool.uv]
+dev-dependencies = [
+    "pre-commit>=3.7",
+    "commitizen>=3.27",
+]
+
+[tool.uv.workspace]
+members = [
+    "apps/api",
+    "apps/cli",
+    "packages/shared_types",
+    "packages/shared_utils",
+]
+
+# ─── Ruff (shared defaults, overridable per package) ───────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "B", "C4", "UP", "S", "ANN"]
+ignore = ["ANN101", "ANN102", "ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "ANN"]
+"alembic/**" = ["ANN", "E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ─── Mypy (shared baseline) ────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+plugins = ["pydantic.mypy"]
