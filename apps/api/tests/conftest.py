@@ -1,12 +1,14 @@
 import os
 from collections.abc import AsyncGenerator
 
-import pytest
+import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.pool import NullPool
+
 from podforge_api.database import get_db
 from podforge_api.main import app
 from podforge_api.models.base import Base
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 TEST_DATABASE_URL = os.environ.get(
     "DATABASE_URL",
@@ -14,26 +16,24 @@ TEST_DATABASE_URL = os.environ.get(
 )
 
 
-@pytest.fixture(scope="session")
-async def test_engine():  # type: ignore[misc]
-    engine = create_async_engine(TEST_DATABASE_URL)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    yield engine
+@pytest_asyncio.fixture
+async def db_session() -> AsyncGenerator[AsyncSession, None]:  # type: ignore[misc]
+    engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+    async with engine.connect() as conn:
+        await conn.begin_nested()
+        session = AsyncSession(bind=conn, expire_on_commit=False)
+        try:
+            yield session
+        finally:
+            await session.close()
+            await conn.rollback()
     await engine.dispose()
 
 
-@pytest.fixture
-async def db_session(test_engine) -> AsyncGenerator[AsyncSession, None]:  # type: ignore[misc]
-    factory = async_sessionmaker(test_engine, expire_on_commit=False)
-    async with factory() as session:
-        yield session
-        await session.rollback()
-
-
-@pytest.fixture
+@pytest_asyncio.fixture
 async def client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, None]:
     async def _override_db() -> AsyncGenerator[AsyncSession, None]:
         yield db_session

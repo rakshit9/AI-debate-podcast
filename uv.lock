@@ -22,11 +22,10 @@ dev = [
     { name = "mypy", specifier = ">=1.10" },
     { name = "pre-commit", specifier = ">=3.7" },
     { name = "pytest", specifier = ">=8.2" },
-    { name = "pytest-asyncio", specifier = ">=0.23" },
+    { name = "pytest-asyncio", specifier = ">=0.23,<1.0" },
     { name = "pytest-cov", specifier = ">=5.0" },
     { name = "ruff", specifier = ">=0.4.4" },
     { name = "sqlalchemy", extras = ["mypy"], specifier = ">=2.0.30" },
-    { name = "types-passlib", specifier = ">=1.7" },
 ]
 
 [[package]]
@@ -1244,20 +1243,6 @@ wheels = [
 ]
 
 [[package]]
-name = "passlib"
-version = "1.7.4"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b6/06/9da9ee59a67fae7761aab3ccc84fa4f3f33f125b370f1ccdb915bf967c11/passlib-1.7.4.tar.gz", hash = "sha256:defd50f72b65c5402ab2c573830a6978e5f202ad0d984793c8dde2c4152ebe04", size = 689844, upload-time = "2020-10-08T19:00:52.121Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/3b/a4/ab6b7589382ca3df236e03faa71deac88cae040af60c071a78d254a62172/passlib-1.7.4-py2.py3-none-any.whl", hash = "sha256:aa6bca462b8d8bda89c70b382f0c298a20b5560af6cbfa2dce410c0a2fb669f1", size = 525554, upload-time = "2020-10-08T19:00:49.856Z" },
-]
-
-[package.optional-dependencies]
-bcrypt = [
-    { name = "bcrypt" },
-]
-
-[[package]]
 name = "pathspec"
 version = "1.0.4"
 source = { registry = "https://pypi.org/simple" }
@@ -1291,10 +1276,10 @@ source = { editable = "apps/api" }
 dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
+    { name = "bcrypt" },
     { name = "boto3" },
     { name = "fastapi" },
     { name = "httpx" },
-    { name = "passlib", extra = ["bcrypt"] },
     { name = "podforge-shared-types" },
     { name = "podforge-shared-utils" },
     { name = "psycopg2-binary" },
@@ -1317,7 +1302,6 @@ dev = [
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "sqlalchemy", extra = ["mypy"] },
-    { name = "types-passlib" },
 ]
 
 [package.metadata]
@@ -1325,19 +1309,19 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.13" },
     { name = "anyio", marker = "extra == 'dev'", specifier = ">=4.3" },
     { name = "asyncpg", specifier = ">=0.29" },
+    { name = "bcrypt", specifier = ">=4.0" },
     { name = "boto3", specifier = ">=1.34" },
     { name = "factory-boy", marker = "extra == 'dev'", specifier = ">=3.3" },
     { name = "fastapi", specifier = ">=0.111" },
     { name = "httpx", specifier = ">=0.27" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
-    { name = "passlib", extras = ["bcrypt"], specifier = ">=1.7" },
     { name = "podforge-shared-types", editable = "packages/shared_types" },
     { name = "podforge-shared-utils", editable = "packages/shared_utils" },
     { name = "psycopg2-binary", specifier = ">=2.9" },
     { name = "pydantic", extras = ["email"], specifier = ">=2.7" },
     { name = "pydantic-settings", specifier = ">=2.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.2" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23,<1.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=5.0" },
     { name = "python-jose", extras = ["cryptography"], specifier = ">=3.3" },
     { name = "python-multipart", specifier = ">=0.0.9" },
@@ -1345,7 +1329,6 @@ requires-dist = [
     { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0.30" },
     { name = "sqlalchemy", extras = ["mypy"], marker = "extra == 'dev'", specifier = ">=2.0.30" },
     { name = "structlog", specifier = ">=24.1" },
-    { name = "types-passlib", marker = "extra == 'dev'", specifier = ">=1.7" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.29" },
 ]
 provides-extras = ["dev"]
@@ -1640,7 +1623,7 @@ wheels = [
 
 [[package]]
 name = "pytest"
-version = "9.0.3"
+version = "8.4.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorama", marker = "sys_platform == 'win32'" },
@@ -1649,22 +1632,21 @@ dependencies = [
     { name = "pluggy" },
     { name = "pygments" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7d/0d/549bd94f1a0a402dc8cf64563a117c0f3765662e2e668477624baeec44d5/pytest-9.0.3.tar.gz", hash = "sha256:b86ada508af81d19edeb213c681b1d48246c1a91d304c6c81a427674c17eb91c", size = 1572165, upload-time = "2026-04-07T17:16:18.027Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a3/5c/00a0e072241553e1a7496d638deababa67c5058571567b92a7eaa258397c/pytest-8.4.2.tar.gz", hash = "sha256:86c0d0b93306b961d58d62a4db4879f27fe25513d4b969df351abdddb3c30e01", size = 1519618, upload-time = "2025-09-04T14:34:22.711Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d4/24/a372aaf5c9b7208e7112038812994107bc65a84cd00e0354a88c2c77a617/pytest-9.0.3-py3-none-any.whl", hash = "sha256:2c5efc453d45394fdd706ade797c0a81091eccd1d6e4bccfcd476e2b8e0ab5d9", size = 375249, upload-time = "2026-04-07T17:16:16.13Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/a4/20da314d277121d6534b3a980b29035dcd51e6744bd79075a6ce8fa4eb8d/pytest-8.4.2-py3-none-any.whl", hash = "sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79", size = 365750, upload-time = "2025-09-04T14:34:20.226Z" },
 ]
 
 [[package]]
 name = "pytest-asyncio"
-version = "1.3.0"
+version = "0.26.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pytest" },
-    { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/90/2c/8af215c0f776415f3590cac4f9086ccefd6fd463befeae41cd4d3f193e5a/pytest_asyncio-1.3.0.tar.gz", hash = "sha256:d7f52f36d231b80ee124cd216ffb19369aa168fc10095013c6b014a34d3ee9e5", size = 50087, upload-time = "2025-11-10T16:07:47.256Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/c4/453c52c659521066969523e87d85d54139bbd17b78f09532fb8eb8cdb58e/pytest_asyncio-0.26.0.tar.gz", hash = "sha256:c4df2a697648241ff39e7f0e4a73050b03f123f760673956cf0d72a4990e312f", size = 54156, upload-time = "2025-03-25T06:22:28.883Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e5/35/f8b19922b6a25bc0880171a2f1a003eaeb93657475193ab516fd87cac9da/pytest_asyncio-1.3.0-py3-none-any.whl", hash = "sha256:611e26147c7f77640e6d0a92a38ed17c3e9848063698d5c93d5aa7aa11cebff5", size = 15075, upload-time = "2025-11-10T16:07:45.537Z" },
+    { url = "https://files.pythonhosted.org/packages/20/7f/338843f449ace853647ace35870874f69a764d251872ed1b4de9f234822c/pytest_asyncio-0.26.0-py3-none-any.whl", hash = "sha256:7b51ed894f4fbea1340262bdae5135797ebbe21d8638978e35d31c6d19f72fb0", size = 19694, upload-time = "2025-03-25T06:22:27.807Z" },
 ]
 
 [[package]]
@@ -2075,15 +2057,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/f5/24/cb09efec5cc954f7f9b930bf8279447d24618bb6758d4f6adf2574c41780/typer-0.24.1.tar.gz", hash = "sha256:e39b4732d65fbdcde189ae76cf7cd48aeae72919dea1fdfc16593be016256b45", size = 118613, upload-time = "2026-02-21T16:54:40.609Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/4a/91/48db081e7a63bb37284f9fbcefda7c44c277b18b0e13fbc36ea2335b71e6/typer-0.24.1-py3-none-any.whl", hash = "sha256:112c1f0ce578bfb4cab9ffdabc68f031416ebcc216536611ba21f04e9aa84c9e", size = 56085, upload-time = "2026-02-21T16:54:41.616Z" },
-]
-
-[[package]]
-name = "types-passlib"
-version = "1.7.7.20260211"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b5/f4/718ff8cbef9366e597aefd58929321702d3e183998cea89949ab5423281f/types_passlib-1.7.7.20260211.tar.gz", hash = "sha256:af73afffe1ce94c95c7f6072bd261572c29845de74fdffa3a265fc7634bca056", size = 25666, upload-time = "2026-02-10T15:11:59.517Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/14/6a/e9fc6a5b8f9a380a4a56b9f1e4dba5c6899561868017b17f6de382808b6f/types_passlib-1.7.7.20260211-py3-none-any.whl", hash = "sha256:c0f1ad440c513a6c07f333b28249530686056fd54a7b3ac6128ae31fd46305d3", size = 40457, upload-time = "2026-02-10T15:11:58.647Z" },
 ]
 
 [[package]]

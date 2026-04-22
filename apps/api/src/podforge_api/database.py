@@ -4,15 +4,19 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 from podforge_api.config import get_settings
 
-settings = get_settings()
 
-engine = create_async_engine(
-    settings.database_url,
-    echo=settings.app_debug,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
-)
+def _make_engine() -> "create_async_engine":  # type: ignore[valid-type]
+    s = get_settings()
+    return create_async_engine(
+        s.database_url,
+        echo=s.app_debug,
+        pool_pre_ping=True,
+        pool_size=10,
+        max_overflow=20,
+    )
+
+
+engine = _make_engine()
 
 AsyncSessionLocal = async_sessionmaker(
     engine,
