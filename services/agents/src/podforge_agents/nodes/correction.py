@@ -1,11 +1,11 @@
 import json
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 
 from ..config import get_settings
 from ..graphs.state import PipelineState, ScriptLine
+from ..llm import get_llm
 
 
 async def correction_node(state: PipelineState) -> dict[str, Any]:
@@ -17,10 +17,7 @@ async def correction_node(state: PipelineState) -> dict[str, Any]:
     if not flagged:
         return {"script_clean": True}
 
-    llm = ChatAnthropic(
-        model=settings.fact_check_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.fact_check_model or None)
     prompt = ChatPromptTemplate.from_messages(
         [
             (

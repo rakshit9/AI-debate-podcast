@@ -4,12 +4,12 @@ import json
 from pathlib import Path
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 from ..config import get_settings
 from ..graphs.state import ScriptLine
+from ..llm import get_llm
 
 _PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "pipeline" / "fact_checker_v1.md"
 
@@ -44,10 +44,7 @@ async def run_fact_check_chain(
         ).model_dump()
 
     settings = get_settings()
-    llm = ChatAnthropic(
-        model=settings.fact_check_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.fact_check_model or None)
     structured_llm = llm.with_structured_output(FactCheckResult)
 
     system_prompt = _PROMPT_PATH.read_text()

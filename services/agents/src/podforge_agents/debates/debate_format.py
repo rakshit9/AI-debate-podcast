@@ -7,22 +7,16 @@ from typing import Any, Literal
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.conditions import MaxMessageTermination
 from autogen_agentchat.teams import SelectorGroupChat
-from autogen_ext.models.anthropic import (
-    AnthropicChatCompletionClient,
-)
 
 from ..config import get_settings
 from ..graphs.state import ScriptLine
+from ..llm import get_autogen_client
 
 _PROMPTS = Path(__file__).parent.parent / "prompts" / "hosts"
 
 
 def _read(name: str) -> str:
     return (_PROMPTS / name).read_text()
-
-
-def _make_client(model: str, api_key: str) -> AnthropicChatCompletionClient:
-    return AnthropicChatCompletionClient(model=model, api_key=api_key)
 
 
 def _parse_messages(messages: Any) -> list[ScriptLine]:
@@ -48,26 +42,25 @@ async def run_debate(
 ) -> list[ScriptLine]:
     """Run a 3-agent SelectorGroupChat debate and return the structured script."""
     settings = get_settings()
-    model = settings.debate_model
-    api_key = settings.anthropic_api_key
+    model = settings.debate_model or None
 
     skeptic = AssistantAgent(
         name="DrSkeptic",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("skeptic_v1.md"),
     )
     optimist = AssistantAgent(
         name="TheOptimist",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("optimist_v1.md"),
     )
     moderator = AssistantAgent(
         name="Moderator",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("moderator_v1.md"),
     )
 
-    selector_client = _make_client(model, api_key)
+    selector_client = get_autogen_client(model)
 
     termination = MaxMessageTermination(max_messages=settings.debate_max_turns)
 

@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 
 from ..config import get_settings
 from ..graphs.state import PipelineState
+from ..llm import get_llm
 
 _PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "pipeline" / "planner_v1.md"
 
@@ -17,10 +17,7 @@ def _load_prompt() -> str:
 async def planner_node(state: PipelineState) -> dict[str, Any]:
     """Scope the topic, pick a debate angle, identify key positions."""
     settings = get_settings()
-    llm = ChatAnthropic(
-        model=settings.planner_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.planner_model or None)
     prompt = ChatPromptTemplate.from_messages(
         [
             ("system", _load_prompt()),

@@ -7,10 +7,10 @@ from typing import Any
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.conditions import MaxMessageTermination
 from autogen_agentchat.teams import SelectorGroupChat
-from autogen_ext.models.anthropic import AnthropicChatCompletionClient
 
 from ..config import get_settings
 from ..graphs.state import ScriptLine
+from ..llm import get_autogen_client
 
 _PROMPTS = Path(__file__).parent.parent / "prompts" / "hosts"
 
@@ -23,10 +23,6 @@ _PANELIST_STANCES = [
 
 def _read(name: str) -> str:
     return (_PROMPTS / name).read_text()
-
-
-def _make_client(model: str, api_key: str) -> AnthropicChatCompletionClient:
-    return AnthropicChatCompletionClient(model=model, api_key=api_key)
 
 
 def _parse_messages(messages: Any) -> list[ScriptLine]:
@@ -50,25 +46,24 @@ async def run_panel(
 ) -> list[ScriptLine]:
     """Run a 4-agent SelectorGroupChat panel and return the structured script."""
     settings = get_settings()
-    model = settings.debate_model
-    api_key = settings.anthropic_api_key
+    model = settings.debate_model or None
 
     panelist_prompt = _read("panelist_v1.md")
     panelists = [
         AssistantAgent(
             name=name,
-            model_client=_make_client(model, api_key),
+            model_client=get_autogen_client(model),
             system_message=f"{panelist_prompt}\n\n## Your Specific Stance\n{stance}",
         )
         for name, stance in _PANELIST_STANCES
     ]
     moderator = AssistantAgent(
         name="Moderator",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("moderator_v1.md"),
     )
 
-    selector_client = _make_client(model, api_key)
+    selector_client = get_autogen_client(model)
     max_turns = settings.debate_max_turns + 4
     termination = MaxMessageTermination(max_messages=max_turns)
 
