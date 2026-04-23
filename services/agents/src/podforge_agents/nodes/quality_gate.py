@@ -1,20 +1,17 @@
 import json
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 
 from ..config import get_settings
 from ..graphs.state import PipelineState
+from ..llm import get_llm
 
 
 async def quality_gate_node(state: PipelineState) -> dict[str, Any]:
     """LLM-judge the outline quality. Approve or flag for retry."""
     settings = get_settings()
-    llm = ChatAnthropic(
-        model=settings.outline_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.outline_model or None)
     prompt = ChatPromptTemplate.from_messages(
         [
             (

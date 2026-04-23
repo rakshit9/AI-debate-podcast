@@ -7,20 +7,16 @@ from typing import Any
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.conditions import MaxMessageTermination
 from autogen_agentchat.teams import RoundRobinGroupChat
-from autogen_ext.models.anthropic import AnthropicChatCompletionClient
 
 from ..config import get_settings
 from ..graphs.state import ScriptLine
+from ..llm import get_autogen_client
 
 _PROMPTS = Path(__file__).parent.parent / "prompts" / "hosts"
 
 
 def _read(name: str) -> str:
     return (_PROMPTS / name).read_text()
-
-
-def _make_client(model: str, api_key: str) -> AnthropicChatCompletionClient:
-    return AnthropicChatCompletionClient(model=model, api_key=api_key)
 
 
 def _parse_messages(messages: Any) -> list[ScriptLine]:
@@ -44,17 +40,16 @@ async def run_interview(
 ) -> list[ScriptLine]:
     """Run a 2-agent round-robin interview and return the structured script."""
     settings = get_settings()
-    model = settings.debate_model
-    api_key = settings.anthropic_api_key
+    model = settings.debate_model or None
 
     interviewer = AssistantAgent(
         name="Interviewer",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("interviewer_v1.md"),
     )
     guest = AssistantAgent(
         name="Guest",
-        model_client=_make_client(model, api_key),
+        model_client=get_autogen_client(model),
         system_message=_read("guest_v1.md"),
     )
 

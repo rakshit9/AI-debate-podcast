@@ -3,11 +3,11 @@
 from pathlib import Path
 from typing import Any, Literal
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 
 from ..config import get_settings
+from ..llm import get_llm
 from .research import summarise_research
 
 _PROMPT_PATH = Path(__file__).parent.parent / "prompts" / "pipeline" / "outline_v1.md"
@@ -36,10 +36,7 @@ async def run_outline_chain(
 ) -> dict[str, Any]:
     """Generate and return a structured episode outline."""
     settings = get_settings()
-    llm = ChatAnthropic(
-        model=settings.outline_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.outline_model or None)
     structured_llm = llm.with_structured_output(EpisodeOutline)
 
     system_prompt = _PROMPT_PATH.read_text()

@@ -3,19 +3,16 @@
 import json
 from typing import Any
 
-from langchain_anthropic import ChatAnthropic
 from langchain_core.prompts import ChatPromptTemplate
 
 from ..config import get_settings
+from ..llm import get_llm
 
 
 async def summarise_research(topic: str, research_data: dict[str, Any]) -> str:
     """Return a concise research digest suitable for the outline chain."""
     settings = get_settings()
-    llm = ChatAnthropic(
-        model=settings.outline_model,
-        api_key=settings.anthropic_api_key,
-    )
+    llm = get_llm(model=settings.outline_model or None)
     prompt = ChatPromptTemplate.from_messages(
         [
             (
